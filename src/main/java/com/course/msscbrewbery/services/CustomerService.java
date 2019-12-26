@@ -6,5 +6,12 @@ import org.springframework.http.ResponseEntity;
 import java.util.UUID;
 
 public interface CustomerService {
+    void deleteCustomer(UUID uuid);
+
+    CustomerDto saveCustomer(CustomerDto customer);
+
     CustomerDto getCustomerById(UUID uuid);
+
+    CustomerDto updateCustomer(UUID uuid, CustomerDto customer);
+
 }

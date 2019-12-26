@@ -1,7 +1,7 @@
-package com.course.msscbrewbery.web.controller;
+package com.course.msscbrewbery.web.controller.v2;
 
-import com.course.msscbrewbery.services.BeerService;
-import com.course.msscbrewbery.web.model.BeerDto;
+import com.course.msscbrewbery.services.v2.BeerServiceV2;
+import com.course.msscbrewbery.web.model.v2.BeerDtoV2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -10,31 +10,31 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-@RequestMapping("/api/v/beer")
+@RequestMapping("/api/v2/beer")
 @RestController
-public class BeerController {
-    private  final BeerService beerService;
+public class BeerControllerV2 {
+    private  final BeerServiceV2 beerService;
     @Autowired
-    public BeerController(BeerService beerService) {
+    public BeerControllerV2(BeerServiceV2 beerService) {
         this.beerService = beerService;
     }
 
     @GetMapping({"/{beerId}"})
-    public ResponseEntity<BeerDto> getBeer(@PathVariable("beerId")  UUID beeId) {
-        return new ResponseEntity<BeerDto>(beerService.getBeerById(beeId), HttpStatus.OK);
+    public ResponseEntity<BeerDtoV2> getBeer(@PathVariable("beerId")  UUID beeId) {
+        return new ResponseEntity<BeerDtoV2>(beerService.getBeerById(beeId), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<BeerDto> addBeer(@RequestBody BeerDto beer) {
-        BeerDto savedBeerDtoV2 = beerService.saveBeer(beer);
+    public ResponseEntity<BeerDtoV2> addBeer(@RequestBody BeerDtoV2 beer) {
+        BeerDtoV2 savedBeerDtoV2 = beerService.saveBeer(beer);
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Location", "/api/v1/beer/" + savedBeerDtoV2.getUuid().toString());
+        httpHeaders.add("Location", "/api/v2/beer/" + savedBeerDtoV2.getUuid().toString());
         return new ResponseEntity<>(savedBeerDtoV2, httpHeaders, HttpStatus.CREATED);
     }
 
     @PutMapping({"/{beerId}"})
-    public ResponseEntity<BeerDto> updateBeer(@PathVariable("beerId")UUID uuid, @RequestBody BeerDto beer) {
-        BeerDto updatedBeerDtoV2 = beerService.updateBeer(uuid, beer);
+    public ResponseEntity<BeerDtoV2> updateBeer(@PathVariable("beerId")UUID uuid, @RequestBody BeerDtoV2 beer) {
+        BeerDtoV2 updatedBeerDtoV2 = beerService.updateBeer(uuid, beer);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", "/api/v2/beer/" + updatedBeerDtoV2.getUuid().toString());
         return new ResponseEntity<>(updatedBeerDtoV2, httpHeaders, HttpStatus.OK);
