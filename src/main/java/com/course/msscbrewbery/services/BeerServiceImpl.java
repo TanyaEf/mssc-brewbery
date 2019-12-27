@@ -25,7 +25,7 @@ public class BeerServiceImpl implements BeerService {
 
     @Override
     public BeerDto updateBeer(UUID uuid, BeerDto beer) {
-        return BeerDto.builder().uuid(beer.getUuid()).build();
+        return BeerDto.builder().uuid(uuid).build();
     }
 
     @Override

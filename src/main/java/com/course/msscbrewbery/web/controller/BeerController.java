@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-@RequestMapping("/api/v/beer")
+@RequestMapping("/api/v1/beer")
 @RestController
 public class BeerController {
     private  final BeerService beerService;
@@ -36,8 +36,8 @@ public class BeerController {
     public ResponseEntity<BeerDto> updateBeer(@PathVariable("beerId")UUID uuid, @RequestBody BeerDto beer) {
         BeerDto updatedBeerDtoV2 = beerService.updateBeer(uuid, beer);
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Location", "/api/v2/beer/" + updatedBeerDtoV2.getUuid().toString());
-        return new ResponseEntity<>(updatedBeerDtoV2, httpHeaders, HttpStatus.OK);
+        httpHeaders.add("Location", "/api/v1/beer/" + updatedBeerDtoV2.getUuid().toString());
+        return new ResponseEntity<>(updatedBeerDtoV2, httpHeaders, HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping({"/{beerId}"})
