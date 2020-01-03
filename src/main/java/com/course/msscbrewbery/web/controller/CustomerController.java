@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
@@ -26,7 +27,7 @@ public class CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity<CustomerDto> addCustomer(@RequestBody CustomerDto Customer) {
+    public ResponseEntity<CustomerDto> addCustomer(@Valid @RequestBody CustomerDto Customer) {
         CustomerDto savedCustomerDto = customerService.saveCustomer(Customer);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", "/api/v1/customer/" + savedCustomerDto.getUuid().toString());
@@ -34,7 +35,7 @@ public class CustomerController {
     }
 
     @PutMapping({"/{customerId}"})
-    public ResponseEntity<CustomerDto> updateCustomer(@PathVariable("customerId")UUID uuid, @RequestBody CustomerDto Customer) {
+    public ResponseEntity<CustomerDto> updateCustomer(@PathVariable("customerId")UUID uuid, @Valid @RequestBody CustomerDto Customer) {
         CustomerDto updatedCustomerDto = customerService.updateCustomer(uuid, Customer);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", "/api/v1/customer/" + updatedCustomerDto.getUuid().toString());
@@ -46,4 +47,6 @@ public class CustomerController {
     public void deleteCustomerById(@PathVariable("customerId")UUID uuid) {
         customerService.deleteCustomer(uuid);
     }
+
+
 }

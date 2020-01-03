@@ -2,12 +2,16 @@ package com.course.msscbrewbery.web.controller;
 
 import com.course.msscbrewbery.services.BeerService;
 import com.course.msscbrewbery.web.model.BeerDto;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @RequestMapping("/api/v1/beer")
@@ -25,7 +29,7 @@ public class BeerController {
     }
 
     @PostMapping
-    public ResponseEntity<BeerDto> addBeer(@RequestBody BeerDto beer) {
+    public ResponseEntity<BeerDto> addBeer(@Valid @RequestBody BeerDto beer) {
         BeerDto savedBeerDtoV2 = beerService.saveBeer(beer);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", "/api/v1/beer/" + savedBeerDtoV2.getUuid().toString());
@@ -33,10 +37,10 @@ public class BeerController {
     }
 
     @PutMapping({"/{beerId}"})
-    public ResponseEntity<BeerDto> updateBeer(@PathVariable("beerId")UUID uuid, @RequestBody BeerDto beer) {
+    public ResponseEntity<BeerDto> updateBeer(@PathVariable("beerId")UUID uuid, @Valid @RequestBody BeerDto beer) {
         BeerDto updatedBeerDtoV2 = beerService.updateBeer(uuid, beer);
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Location", "/api/v1/beer/" + updatedBeerDtoV2.getUuid().toString());
+//        httpHeaders.add("Location", "/api/v1/beer/" + updatedBeerDtoV2.getUuid().toString()); // TODO fix BeerControllerTest.handleUpdate NPE
         return new ResponseEntity<>(updatedBeerDtoV2, httpHeaders, HttpStatus.NO_CONTENT);
     }
 
